@@ -5,22 +5,65 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Video Redirect</title>
   <style>
-    :root { --bg1:#00b4db; --bg2:#0083b0; --accent:#ffeb3b; }
-    html,body{height:100%;margin:0;font-family:Inter,Arial,Helvetica,sans-serif}
-    body{
-      display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,var(--bg1),var(--bg2));
-      color:#fff;padding:20px;text-align:center;
+    :root {
+      --bg1: #00b4db;
+      --bg2: #0083b0;
+      --accent: #ffeb3b;
     }
-    .card{
-      background:rgba(255,255,255,0.06);padding:28px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,0.25);
-      max-width:520px;width:100%;
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
     }
-    a{color:var(--accent);text-decoration:none;font-weight:700}
-    .links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
-    .btn{background:rgba(255,255,255,0.08);padding:8px 12px;border-radius:8px;color:#fff;border:0;cursor:pointer}
-    .muted{opacity:0.9}
-    small{opacity:0.9;display:block;margin-top:6px}
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    .card {
+      background: rgba(255,255,255,0.06);
+      padding: 28px;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+      max-width: 520px;
+      width: 100%;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 14px;
+    }
+    .btn {
+      background: rgba(255,255,255,0.08);
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #fff;
+      border: 0;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn:hover {
+      background: rgba(255,255,255,0.15);
+    }
+    .muted {
+      opacity: 0.9;
+    }
+    small {
+      opacity: 0.9;
+      display: block;
+      margin-top: 6px;
+    }
   </style>
 </head>
 <body>
@@ -35,48 +78,46 @@
   </div>
 
   <script>
-    // === Update these YouTube links as needed ===
+    // === Video link mapping ===
     const videoLinks = {
-      varun: "https://youtu.be/dQw4w9WgXcQ",       // Varun
-      sreeker: "https://youtu.be/9bZkp7q19f0",     // Sreeker
-      bharath: "https://youtu.be/3JZ_D3ELwOQ",     // Bharath
-      divija: "https://youtu.be/L_jWHffIx5E",      // Divija
-      prasanna: "https://youtu.be/fJ9rUzIMcZQ",    // Prasanna
-      parley: "https://youtu.be/6Dh-RL__uN4"       // Parley
+      varun: "https://youtu.be/dQw4w9WgXcQ",
+      sreeker: "https://youtu.be/9bZkp7q19f0",
+      bharath: "https://youtu.be/3JZ_D3ELwOQ",
+      divija: "https://youtu.be/L_jWHffIx5E",
+      prasanna: "https://youtu.be/fJ9rUzIMcZQ",
+      parley: "https://youtu.be/6Dh-RL__uN4"
     };
 
-    // Helper: normalize a candidate into a key
-    function normalizeKey(s){
-      if(!s) return "";
-      return String(s).replace(/^\/+|\/+$/g,"").toLowerCase();
+    // Helper to clean up input keys
+    function normalizeKey(s) {
+      if (!s) return "";
+      return String(s).replace(/^\/+|\/+$/g, "").toLowerCase();
     }
 
-    // 1) Try path (works when deployed with Netlify routes like /varun)
-    const rawPath = window.location.pathname || "";
-    let key = normalizeKey(rawPath);
+    // === Determine which video to open ===
+    let key = normalizeKey(window.location.pathname);
 
-    // 2) If not found, try query param ?video=varun (useful locally)
-    if(!videoLinks[key]){
+    // 1. Try query param ?video=...
+    if (!videoLinks[key]) {
       const params = new URLSearchParams(window.location.search);
       const q = params.get("video");
-      if(q) key = normalizeKey(q);
+      if (q) key = normalizeKey(q);
     }
 
-    // 3) If still not found, try hash routes (#/varun or #varun)
-    if(!videoLinks[key]){
+    // 2. Try hash route #/varun or #varun
+    if (!videoLinks[key]) {
       const h = window.location.hash || "";
-      if(h){
-        key = normalizeKey(h.replace(/^#\/?/, ""));
-      }
+      if (h) key = normalizeKey(h.replace(/^#\/?/, ""));
     }
 
     const titleEl = document.getElementById("title");
     const descEl = document.getElementById("desc");
     const actions = document.getElementById("actions");
 
-    function showNotFound(){
+    // === Not Found State ===
+    function showNotFound() {
       titleEl.textContent = "Video not found 😕";
-      descEl.innerHTML = `No video route detected. If you're testing locally, either:
+      descEl.innerHTML = `No video route detected. Try one of these:
         <ul style="text-align:left;display:inline-block;margin:12px 0;padding-left:18px">
           <li>Use a query like <code>?video=varun</code></li>
           <li>Use a hash like <code>#/varun</code></li>
@@ -86,37 +127,46 @@
       populateTestLinks();
     }
 
-    function populateTestLinks(){
+    // === Create clickable test buttons ===
+    function populateTestLinks() {
       const container = document.getElementById("testLinks");
       container.innerHTML = "";
-      Object.keys(videoLinks).forEach(k=>{
+      Object.keys(videoLinks).forEach(k => {
         const btn = document.createElement("button");
         btn.className = "btn";
         btn.textContent = k;
-        btn.onclick = ()=> {
-          // For local test we'll use query param which loads same file but with ?video=...
-          // If deployed with Netlify, clicking will go to /k and Netlify will serve index.html for that route.
-          if(location.protocol === "file:"){
+        btn.onclick = () => {
+          if (location.protocol === "file:") {
+            // Local testing
             location.href = location.pathname + "?video=" + encodeURIComponent(k);
           } else {
-            // on web, navigate to root + /k (this will work with Netlify _redirects or single-page deploy)
-            const base = location.origin + (location.pathname.replace(/\/[^/]*$/,"") === "/" ? "" : "");
-            location.href = (base.endsWith("/") ? base.slice(0,-1): base) + "/" + k;
+            // Hosted version (Netlify/GitHub Pages)
+            location.href = `${location.origin}/${k}`;
           }
         };
         container.appendChild(btn);
       });
     }
 
-    function redirectTo(url){
+    // === Redirect with countdown ===
+    function redirectTo(url) {
       titleEl.textContent = "Redirecting…";
-      descEl.innerHTML = Opening <a href="${url}" target="_blank" rel="noopener">${url}</a> in 2s. If nothing happens, click the link.;
-      // For safety open in same tab after short delay (2s)
-      setTimeout(()=> { window.location.href = url; }, 2000);
+      let seconds = 2;
+      const linkHTML = `<a href="${url}" target="_blank" rel="noopener">${url}</a>`;
+      descEl.innerHTML = `Opening ${linkHTML} in <span id="count">${seconds}</span>s. If nothing happens, click the link.`;
+
+      const counter = setInterval(() => {
+        seconds--;
+        document.getElementById("count").textContent = seconds;
+        if (seconds <= 0) {
+          clearInterval(counter);
+          window.location.assign(url);
+        }
+      }, 1000);
     }
 
-    // Main logic
-    if(key && videoLinks[key]){
+    // === Main logic ===
+    if (key && videoLinks[key]) {
       redirectTo(videoLinks[key]);
     } else {
       showNotFound();
