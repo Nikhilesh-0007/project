@@ -149,21 +149,12 @@
     }
 
     // === Redirect with countdown ===
-    function redirectTo(url) {
-      titleEl.textContent = "Redirecting…";
-      let seconds = 2;
-      const linkHTML = `<a href="${url}" target="_blank" rel="noopener">${url}</a>`;
-      descEl.innerHTML = `Opening ${linkHTML} in <span id="count">${seconds}</span>s. If nothing happens, click the link.`;
+   function redirectTo(url) {
+  titleEl.textContent = "Redirecting…";
+  descEl.innerHTML = `Opening <a href="${url}" target="_blank" rel="noopener">${url}</a>...`;
+  window.location.assign(url); // Instant redirect
+}
 
-      const counter = setInterval(() => {
-        seconds--;
-        document.getElementById("count").textContent = seconds;
-        if (seconds <= 0) {
-          clearInterval(counter);
-          window.location.assign(url);
-        }
-      }, 1000);
-    }
 
     // === Main logic ===
     if (key && videoLinks[key]) {
