@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting to GNN-AID Milestone-1 Video...</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting...</title>
   <script>
-    // Redirect to the YouTube video as soon as the page loads
-    window.location.href = "https://youtu.be/sfgGjT9KV0w?si=gGXDQoYW6Fjdwk65";
+    // 🔗 Update YouTube links here anytime
+    const redirects = {
+      "nikhilesh": "https://youtu.be/sfgGjT9KV0w?si=gGXDQoYW6Fjdwk65",
+      "nomesh": "https://youtu.be/XXXXXXXXXXX",
+      "katta": "https://youtu.be/XXXXXXXXXXX",
+      "kodi": "https://youtu.be/XXXXXXXXXXX"
+    };
+
+    const path = window.location.pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
+
+    // Immediately redirect if found
+    if (redirects[path]) {
+      window.location.replace(redirects[path]);
+    } else {
+      document.addEventListener("DOMContentLoaded", () => {
+        document.body.innerHTML = `
+          <h2 style="text-align:center;margin-top:20vh;font-family:Arial;">
+            🚀 Video not found.<br>Please check the URL.
+          </h2>`;
+      });
+    }
   </script>
 </head>
 <body>
-  <p>Redirecting you to the milestone video... If not redirected, <a href="https://youtu.be/sfgGjT9KV0w?si=gGXDQoYW6Fjdwk65">click here</a>.</p>
+  <p style="text-align:center;margin-top:20vh;font-family:Arial;">
+    Redirecting...
+  </p>
 </body>
 </html>
