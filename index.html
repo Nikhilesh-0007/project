@@ -3,35 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting...</title>
+  <title>Redirecting to GNN-AID Milestone-1 Video...</title>
   <script>
-    // 🎬 Your YouTube video links for each route
-    const videoLinks = {
-      varun: "https://youtu.be/sfgGjT9KV0w?si=gGXDQoYW6Fjdwk65",     // GNN-AID Milestone-1
-      sreeker: "https://youtu.be/dQw4w9WgXcQ",
-      bharath: "https://youtu.be/3JZ_D3ELwOQ",
-      divija: "https://youtu.be/L_jWHffIx5E",
-      prasanna: "https://youtu.be/fJ9rUzIMcZQ",
-      parley: "https://youtu.be/6Dh-RL__uN4"
-    };
-
-    // Detect the route name (e.g. /varun)
-    const path = window.location.pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
-
-    // Redirect instantly if route exists
-    const target = videoLinks[path];
-    if (target) {
-      window.location.href = target;
-    } else {
-      document.write(`
-        <h2 style="font-family:sans-serif;text-align:center;margin-top:40vh;">
-          Redirecting you to the milestone video... <br>
-          <a href="${videoLinks.varun}" target="_blank">Click here</a> if not redirected.
-        </h2>
-      `);
-      setTimeout(() => window.location.href = videoLinks.varun, 500);
-    }
+    // Redirect to the YouTube video as soon as the page loads
+    window.location.href = "https://youtu.be/sfgGjT9KV0w?si=gGXDQoYW6Fjdwk65";
   </script>
 </head>
-<body></body>
+<body>
+  <p>Redirecting you to the milestone video... If not redirected, <a href="https://youtu.be/sfgGjT9KV0w?si=gGXDQoYW6Fjdwk65">click here</a>.</p>
+</body>
 </html>
